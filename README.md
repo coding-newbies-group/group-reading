@@ -4,6 +4,8 @@
 
 https://docs.qq.com/sheet/DZWlGYmRwZmxFR1Zm?tab=BB08J2
 
+[Mumu的共读笔记（仅简略提示）](./mumu.md)
+
 ## 活动说明
 
 一、共读书物：
