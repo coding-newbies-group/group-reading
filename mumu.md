@@ -74,7 +74,69 @@ print(message)
 
 ## 2.3 字符串
 
+> name = "ada lovelace"
+>
+> print(name.title())
 
+上面是书中的范例代码，如果不太好理解print(name.title())
+
+可以试着理解下面的代码：
+
+```python
+name = "ada lovelace"
+name = name.title()
+print(name)
+```
+
+
+
+lower()方法很有用。把数据全部转换成小写保存，用的时候根据需要再转换为首字母大写或全大写。
+
+
+
+f 字符串，有的地方会看到叫f-string，string翻译过来也是字符串。
+
+
+
+制表符通常就是按tab键的效果。
+
+
+
+" python" 和 "python"是不同的，前面的p前面有一个空格，要对空格敏感，对计算机而言，空也是一种东西，虽然，对人而言，看上去好像空是不存在的。
+
+
+
+练习：
+
+```python
+# 练习2.3
+name = "Eric"
+msg = f"Hello {name}, would you like to learn some Python today?"
+print(msg)
+
+# 练习2.4
+print(name.lower())
+print(name.upper())
+print(name.capitalize())
+
+# 练习2.5
+print('Albert Einstein once said, "A person who never made a mistake never tried anything new."')
+
+# 练习2.6
+famous_person = "Albert Einstein"
+msg2 = f'{famous_person} once said, "A person who never made a mistake never tried anything new."'
+print(msg2)
+
+# 练习2.7
+name2 = " Mumu \t Wu \n "
+name3 = "Mumu \t Wu"
+print(len(name2.strip()))
+print(len(name3.strip()))
+```
+
+练习2.7，为了验证删除空白的效果，我创建了name3作为对照，len()函数用于获取结果的长度，发现长度是一致的，所以，对于删除空白，name3的内容等价于name2删除空白后的结果。
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230704221357.png)
 
 
 
