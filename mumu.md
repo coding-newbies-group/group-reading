@@ -115,28 +115,40 @@ msg = f"Hello {name}, would you like to learn some Python today?"
 print(msg)
 
 # 练习2.4
+print("=======================================")
 print(name.lower())
 print(name.upper())
 print(name.capitalize())
 
 # 练习2.5
+print("=======================================")
 print('Albert Einstein once said, "A person who never made a mistake never tried anything new."')
 
 # 练习2.6
+print("=======================================")
 famous_person = "Albert Einstein"
 msg2 = f'{famous_person} once said, "A person who never made a mistake never tried anything new."'
 print(msg2)
 
 # 练习2.7
+print("=======================================")
 name2 = " Mumu \t Wu \n "
 name3 = "Mumu \t Wu"
+print(name2.strip())
+print(name2.lstrip())
+print(name2.rstrip())
 print(len(name2.strip()))
 print(len(name3.strip()))
+
+# 练习2.8
+print("=======================================")
+filename = "python_notes.txt"
+print(filename.removesuffix(".txt"))
 ```
 
 练习2.7，为了验证删除空白的效果，我创建了name3作为对照，len()函数用于获取结果的长度，发现长度是一致的，所以，对于删除空白，name3的内容等价于name2删除空白后的结果。
 
-![](https://raw.githubusercontent.com/vwumumu/images/master/20230704221357.png)
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230705082719.png)
 
 
 
