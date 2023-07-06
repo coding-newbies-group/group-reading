@@ -206,7 +206,115 @@ print(msg)
 
 ## 3.1 列表是什么
 
+## 练习 3.1-3.3
+
+```py
+# 练习 3.1
+
+names = ["张三", "李四", "王五"]
+print(names[0])
+print(names[1])
+print(names[2])
+
+# 练习 3.2
+
+print(f"你好，{names[0]}")
+print(f"你好，{names[1]}")
+print(f"你好，{names[2]}")
+
+# 练习 3.3
+
+methods = ["开车", "骑车"]
+
+print(f'通常，我都是{methods[0]}上班，偶尔，为了锻炼身体也会{methods[1]}去上班。(我信你个鬼')
+
+
+## 注意中英文标点符号
+
+# 英文标点：'' "" , .
+# 中文标点：‘’ “” ， 。
+```
+
+从此刻开始，请注意，中英文标点符号在VSCode中的不同，对于包裹字符串用的引号是英文的。
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230706135501.png)
+
 ## 3.2 修改、添加和删除元素
+
+列表中某个特定元素的修改，也就是对这个特定索引重新赋值。
+
+
+
+对于删除列表中的元素，如果不使用删除后的内容，使用del语句，如果还使用删除后的内容，用pop()方法。
+
+
+
+remove()只删除第一个指定的元素，如果要全部删除需要用循环遍历，以后会学到。
+
+
+
+## 练习 3.4-3.7
+
+```python
+# 练习 3.4
+invitees = ["张三", "李四", "王五"]
+print(f'{invitees[0]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[1]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[2]}您好，诚挚地邀请您一起参加晚餐。')
+
+# 练习 3.5
+# 张三不能参加
+
+print(f"{invitees[0]}不能参加晚宴。")
+invitees[0] = "赵四"
+print(f'{invitees[0]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[1]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[2]}您好，诚挚地邀请您一起参加晚餐。')
+
+# 练习 3.6
+print("大家好，我找到了一张更大的餐桌，将邀请更多的人参加晚餐。")
+invitees.insert(0, "新1")
+invitees.insert(2, "新2")
+invitees.append("新3")
+print(invitees)
+print(f'{invitees[0]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[1]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[2]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[3]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[4]}您好，诚挚地邀请您一起参加晚餐。')
+print(f'{invitees[5]}您好，诚挚地邀请您一起参加晚餐。')
+
+# 练习 3.7
+print("因为新买的餐桌无法送达，因此这次只能邀请两位朋友参加完餐，十分抱歉。")
+target = invitees.pop()
+print(f'很抱歉，{target}，没有办法邀请您参加晚宴了。')
+target = invitees.pop()
+print(f'很抱歉，{target}，没有办法邀请您参加晚宴了。')
+target = invitees.pop()
+print(f'很抱歉，{target}，没有办法邀请您参加晚宴了。')
+target = invitees.pop()
+print(f'很抱歉，{target}，没有办法邀请您参加晚宴了。')
+print(f'{invitees[0]}，请您参加晚宴。')
+print(f'{invitees[1]}，请您参加晚宴。')
+del invitees[1]
+del invitees[0]
+print(invitees)
+```
+
+关于使用del语句删除的顺序的问题，请大家比较下面的区别：
+
+```python
+del invitees[1]
+del invitees[0]
+
+del invitees[0]
+del invitees[1]
+
+del invitees[0]
+del invitees[0]
+```
+
+
 
 ## 3.3 管理列表
 
