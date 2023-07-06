@@ -245,11 +245,11 @@ print(f'通常，我都是{methods[0]}上班，偶尔，为了锻炼身体也会
 
 
 
-对于删除列表中的元素，如果不使用删除后的内容，使用del语句，如果还使用删除后的内容，用pop()方法。
+对于删除列表中的元素，如果不使用删除后的内容，使用`del`语句，如果还使用删除后的内容，用`pop()`方法。
 
 
 
-remove()只删除第一个指定的元素，如果要全部删除需要用循环遍历，以后会学到。
+`remove()`只删除第一个指定的元素，如果要全部删除需要用循环遍历，以后会学到。
 
 
 
@@ -301,7 +301,7 @@ del invitees[0]
 print(invitees)
 ```
 
-关于使用del语句删除的顺序的问题，请大家比较下面的区别：
+关于使用`del`语句删除的顺序的问题，请大家比较下面的区别：
 
 ```python
 del invitees[1]
@@ -318,9 +318,102 @@ del invitees[0]
 
 ## 3.3 管理列表
 
+向`sort()`方法传递一个参数，第一次使用参数。
+
+```python
+cars = ['audi','bmw','subaru','toyota']
+cars.sort(reverse=True)
+```
+
+`True`在这里可以理解为`reverse`这个参数的开关，`=`也就是设定，设定为`True`，表示该选项打开。
+
+
+
+注意比较下面的区别：
+
+```python
+cars.sort()
+sorted(cars)
+```
+
+`cars`是列表，`sort()`是列表这种东西身上的方法，所以使用的方式是`cars.sort()`
+
+`sorted()`是一个函数，具备特定的功能，对cars执行特定的功能，比如`print()`，也可以执行特定的功能。
+
+感受这种区别。
+
+
+
+len()其实在我前面的笔记中已经提到过了，也可以用户获取字符的长度，比如`hello`有5个字符：
+
+```python
+>>> len("hello")
+5
+```
+
+
+
 ## 3.4 使用列表时避免索引错误
 
+未来，学习了if判断，可以判断列表的长度是否为0，避免空列表索引错误。
 
+```python
+>>> len([])
+0
+```
+
+
+
+## 练习3.8-3.11
+
+```python
+# 练习 3.8
+locations = ["Japan","Korea","France","Germany","Canada","Australia"]
+
+print(locations) #打印列表
+print(sorted(locations)) #不改变原列表按字母排序
+print(locations)
+print(sorted(locations,reverse=True)) #不改变原列表按字母反向排序
+print(locations)
+locations.reverse() #改变原列表逆转列表元素
+print(locations)
+locations.reverse() #改变原列表再逆转回来
+print(locations)
+locations.sort() #改变原列表按字母顺序排序
+print(locations)
+locations.sort(reverse=True) #改变原列表按字母顺序反向排序
+print(locations)
+
+# 练习 3.9
+#我就直接打印练习3.8的列表长度了
+print(len(locations))
+
+# 练习 3.10
+list = ["Japan","黄河","北京","德语","北京","bmw"]
+print(list)
+print(len(list))
+list.pop()
+print(list)
+list.append("hi")
+print(list)
+list.insert(0,'mumu')
+print(list)
+list.remove("北京")
+print(list)
+del list[2]
+print(list)
+list.sort()
+print(list)
+list.reverse()
+print(list)
+
+# 练习 3.11
+print(list[9])
+```
+
+sorted()使用reverse参数的参考：
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230706185017.png)
 
 # 4 操作列表
 
