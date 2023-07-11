@@ -38,7 +38,7 @@
 
 进入PowerShell
 
-```
+```powershell
 cd ~\desktop\python_work
 python hello_world.py
 ```
@@ -85,9 +85,9 @@ print(message)
 可以试着理解下面的代码：
 
 ```python
-name = "ada lovelace"
-name = name.title()
-print(name)
+name = "ada lovelace" #原始的字符串
+name = name.title()  #处理字符串
+print(name)  #打印处理后的字符串
 ```
 
 
@@ -332,13 +332,13 @@ cars.sort(reverse=True)
 注意比较下面的区别：
 
 ```python
-cars.sort()
+cars.sort()  #method
 sorted(cars)
 ```
 
 `cars`是列表，`sort()`是列表这种东西身上的方法，所以使用的方式是`cars.sort()`
 
-`sorted()`是一个函数，具备特定的功能，对cars执行特定的功能，比如`print()`，也可以执行特定的功能。
+`sorted()`是一个函数，具备特定的功能，对`cars`执行特定的功能，比如`print()`，也可以执行特定的功能。
 
 感受这种区别。
 
@@ -411,7 +411,7 @@ print(list)
 print(list[9])
 ```
 
-sorted()使用reverse参数的参考：
+`sorted()`使用`reverse`参数的参考：
 
 ![](https://raw.githubusercontent.com/vwumumu/images/master/20230706185017.png)
 
@@ -421,9 +421,99 @@ sorted()使用reverse参数的参考：
 
 ## 4.2 避免缩进错误
 
+概括一下：对于for里面的内容，要向右缩进，如果跟for的代码是左边是上下对齐的，就是for之外的代码，或者说是跟for平级的代码。
+
+> 属于for循环的内容的内容，要向右缩进
+
+
+
+提示一下：for的第一行结尾需要英文的冒号:
+
+```shell
+  File "c:\Users\vwumumu\Desktop\python_work\4.1-4.2.py", line 5
+    for pizza in pizzas
+                       ^
+SyntaxError: expected ':'
+```
+
+## 练习4.1-4.2
+
+```python
+# 练习 4.1
+
+pizzas = ["Margherita", "Pepperoni", "Hawaiian"]
+
+for pizza in pizzas:
+    print(pizza)
+    print(f"I like {pizza} pizza.")
+print("I really love pizza!")
+
+# 练习 4.2
+
+animals = ["lion", 'tiger', 'cougar']
+
+for animal in animals:
+    print(f"{animal} can roar loudly")
+print('All these animals can roar loudly.')
+
+```
+
+
+
 ## 4.3 创建数值列表
 
+range(1,6)的结果是数字1，2，3，4，5，即括号内的范围是含左不含右的。
+
+
+
+列表推导式，新人不掌握也没关系，但是需要知道，避免看到别人的代码不认识。
+
+## 练习 4.3-4.9
+
+```python
+# 练习 4.3
+for i in range(1,21):
+    print(i)
+
+# 练习 4.4
+list = range(1,1_000_001)
+# for i in list:
+    # print(i)
+
+# 练习 4.5
+print(min(list))
+print(max(list))
+print(sum(list))
+
+# 练习 4.6
+odd = range(1,21,2)
+for i in odd:
+    print(i)
+
+# 练习 4.7
+three_times = range(3,31,3)
+for i in three_times:
+    print(i)
+
+# 练习 4.8
+cube = []
+list2 = range(1,11)
+for i in list2:
+    cube.append(i ** 3)
+print(cube)
+
+# 练习 4.9
+cube = [i ** 3 for i in range(1,11)]
+print(cube)
+```
+
+
+
 ## 4.4 使用列表的一部分
+
+## 练习4.10-4.12
+
+
 
 ## 4.5 元组
 
