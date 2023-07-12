@@ -108,7 +108,7 @@ f 字符串，有的地方会看到叫f-string，string翻译过来也是字符�
 
 
 
-## 练习2.3-2.8
+### 练习2.3-2.8
 
 ```python
 # 练习2.3
@@ -183,7 +183,7 @@ const b = 2 //用const表明b是一个常量
 
 ![](https://raw.githubusercontent.com/vwumumu/images/master/20230705143622.png)
 
-## 练习 2.9-2.10
+### 练习 2.9-2.10
 
 ```python
 # 练习 2.9
@@ -206,7 +206,7 @@ print(msg)
 
 ## 3.1 列表是什么
 
-## 练习 3.1-3.3
+### 练习 3.1-3.3
 
 ```py
 # 练习 3.1
@@ -253,7 +253,7 @@ print(f'通常，我都是{methods[0]}上班，偶尔，为了锻炼身体也会
 
 
 
-## 练习 3.4-3.7
+### 练习 3.4-3.7
 
 ```python
 # 练习 3.4
@@ -364,7 +364,7 @@ len()其实在我前面的笔记中已经提到过了，也可以用户获取字
 
 
 
-## 练习3.8-3.11
+### 练习3.8-3.11
 
 ```python
 # 练习 3.8
@@ -436,7 +436,7 @@ print(list[9])
 SyntaxError: expected ':'
 ```
 
-## 练习4.1-4.2
+### 练习4.1-4.2
 
 ```python
 # 练习 4.1
@@ -462,13 +462,13 @@ print('All these animals can roar loudly.')
 
 ## 4.3 创建数值列表
 
-range(1,6)的结果是数字1，2，3，4，5，即括号内的范围是含左不含右的。
+range(1,6)的结果是数字1，2，3，4，5，即括号内的范围是**含左不含右**的。
 
 
 
 列表推导式，新人不掌握也没关系，但是需要知道，避免看到别人的代码不认识。
 
-## 练习 4.3-4.9
+### 练习 4.3-4.9
 
 ```python
 # 练习 4.3
@@ -507,17 +507,321 @@ cube = [i ** 3 for i in range(1,11)]
 print(cube)
 ```
 
+```python
+cube = []
+for i in range(1,11):
+	cube.append(i ** 3)
+print(cube)
+    
+# cube = [i ** 3 for i in range(1,11)]
+```
 
 
-## 4.4 使用列表的一部分
 
-## 练习4.10-4.12
+## 4.4 使用列表的一部分(切片)
+
+### 练习4.10-4.12
+
+```python
+# 练习 4.10
+
+three_times = list(range(3,31,3))
+# for i in three_times:
+#     print(i)
+
+print(f"The first three items in the list are: {three_times[0:3]}")
+print(f"Three items from the middle of the list are: {three_times[4:7]}")
+print(f"The last three items in the list are: {three_times[-3:]}")
+
+# 练习 4.11
+
+pizzas = ["Margherita", "Pepperoni", "Hawaiian"]
+friend_pizzas = pizzas[:]
+
+friend_pizzas.append("榴莲披萨")
+for pizza in pizzas:
+    print(f"I like {pizza} pizza.")
+
+for pizza in friend_pizzas:
+    print(f"I like {pizza} pizza.")
+
+# 练习 4.12
+
+#同练习4.11
+```
 
 
 
 ## 4.5 元组
 
+不可变的列表称为元组（tuple）。
+
+
+
+不能修改元组中的元素，但是可以对元组的变量重新赋值一个新元组，这本质上是赋值，跟元组本身并没有什么关系。
+
+
+
+### 练习 4.13
+
+```python
+# 练习 4.13
+
+foods = ("苹果", "香蕉", "西瓜", "草莓", "橙子")
+
+for food in foods:
+    print(food)
+
+# foods[0] = "榴莲"
+
+foods = ("苹果", "榴莲", "葡萄", "草莓", "橙子")
+
+for food in foods:
+    print(food)
+```
+
+
+
 ## 4.6 设置代码格式
 
+通过VSCode实现代码的格式化
 
+1. 如下图，在VSCode中安装Python插件：
+
+   ![](https://raw.githubusercontent.com/vwumumu/images/master/20230712004001.png)
+
+2. 在任意Python代码文件的代码区域右键选择`Format Document With...`
+
+   ![](https://raw.githubusercontent.com/vwumumu/images/master/20230712004127.png)
+
+3. 设置默认的格式化Python代码所使用的插件
+
+   ![](https://raw.githubusercontent.com/vwumumu/images/master/20230712004236.png)
+
+4. 选择Python作为默认：
+
+   ![](https://raw.githubusercontent.com/vwumumu/images/master/20230712004331.png)
+
+5. 之后，在VSCode代码区右键选择`Format Document`或者同时按键盘`Shift + Alt + F`自动格式化Python代码：
+
+   ![](https://raw.githubusercontent.com/vwumumu/images/master/20230712004421.png)
+
+# 5 if语句
+
+## 5.1 一个简单的示例
+
+## 5.2 条件测试
+
+对于新手，可能会比较难判断什么情况下执行if代码块的内容。
+
+尤其是涉及到`and`, `or`的情况，因为需要判断的内容可能会比较多和复杂。
+
+一个简化的方式是直接把需要判断的内容print出来看看是`True`还是`False`。
+
+比如：
+
+```python
+age_0 = 22
+age_1 = 18
+
+if age_0 >=21 and age_1 >=21:
+	print("Hi")
+    
+print(age_0 >=21 and age_1 >=21)
+```
+
+把`age_0 >=21 and age_1 >=21`打印出来，结果是`False`，自然`if`不会执行，无法打印`Hi`。
+
+
+
+ ### 练习5.1-5.2
+
+```python
+# 练习 5.1
+
+print("1" == 1)
+print("a" == "A")
+print("?" == "？")
+print(1 > 2 and 3>2)
+print(2 > 1 and 3>2)
+print(1 > 2 or 3>2)
+print(2 > 1 or 3>2)
+print("Mumu" in ["Mumu","Zhang San"])
+print("mumu" in ["Mumu".lower(),"Zhang San"])
+print("Mumu" not in ["Mumu","Zhang San"])
+
+
+# 练习 5.2
+
+#同练习5.1
+```
+
+
+
+## 5.3 if语句
+
+注意，if elif，从上向下，当有一个elif满足时，后面的条件将不再判断。
+
+如果需要把所有的条件都判断，需要写成一个个独立的if。
+
+多体会5.3.6披萨的例子。
+
+
+
+### 5.3-5.7
+
+```python
+# 练习 5.3
+alien_color = "green"
+if alien_color == "green":
+    print("获得5分")
+
+alien_color2 = "red"
+if alien_color2 == "green":
+    print("获得5分")
+
+
+# 练习 5.4
+if alien_color == "green":
+    print("获得5分")
+elif alien_color != "green":
+    print("获得10分")
+
+if alien_color2 == "green":
+    print("获得5分")
+elif alien_color2 != "green":
+    print("获得10分")
+
+# 练习 5.5
+if alien_color == "green":
+    print("获得5分")
+elif alien_color == "yellow":
+    print("获得10分")
+else:
+    print("获得15分")
+
+# 练习 5.6
+
+age = 18
+
+if age < 2:
+    print("婴儿")
+elif age < 4:
+    print("幼儿")
+elif age < 13:
+    print("儿童")
+elif age < 18:
+    print("少年")
+elif age < 65:
+    print("中青年人")
+else:
+    print("老年人")
+
+
+# 练习 5.7
+favorite_fruits= ["apple","orange","banana"]
+if "a" in favorite_fruits:
+    print("You really like a")
+if "b" in favorite_fruits:
+    print("You really like a")
+if "c" in favorite_fruits:
+    print("You really like a")
+if "apple" in favorite_fruits:
+    print("You really like apple")
+if "banana" in favorite_fruits:
+    print("You really like banana")
+```
+
+
+
+## 5.4 使用if语句处理列表
+
+如何验证空列表是False？
+
+```python
+>>> a = []
+>>> a == False
+False
+>>> a == True
+False
+>>>
+```
+
+### 练习5.8-5.11
+
+```python
+# 练习 5.8
+users = ["admin","a","b","c","d"]
+
+for user in users:
+    if user == "admin":
+        print("admin")
+    else:
+        print("user")
+
+# 练习 5.9
+if users:
+    for user in users:
+        if user == "admin":
+            print("admin")
+        else:
+            print("user")
+else:
+    print("We need to find some users!")
+
+
+# 练习 5.10
+current_users = []
+
+for i in users:
+    current_users.append(i.lower())
+
+new_users = ["c","d","e","f","g"]
+
+
+for user in new_users:
+    if user in current_users:
+        print("The user name has been used. Please using another one.")
+    else:
+        print("The user name is avaliable.")
+
+# 练习 5.11
+
+list = list(range(1,10))
+for i in list:
+    if i == 1:
+        print("1st")
+    elif i == 2:
+        print("2nd")
+    elif i == 3:
+        print("3rd")
+    else:
+        print(f"{i}th")
+```
+
+
+
+## 5.5 设置if语句的格式
+
+同4.6
+
+# 6 字典
+
+## 6.1 一个简单的字典
+
+## 6.2 使用字典
+
+## 6.3 遍历字典
+
+## 6.4 嵌套
+
+# 7 用户输入和while循环
+
+## 7.1 input()函数的工作原理
+
+## 7.2 while 循环简介
+
+## 7.3 使用while循环处理列表和字典
+
+# 8 函数
 
