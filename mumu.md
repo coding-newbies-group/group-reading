@@ -173,7 +173,7 @@ const b = 2 //用const表明b是一个常量
 
 ## 2.5 注释
 
-在VSCode中，Ctrl + /可以将光标所在行快速的注释和取消注释。
+在VSCode中，`Ctrl + /`可以将光标所在行快速的注释和取消注释。
 
 
 
@@ -188,8 +188,8 @@ const b = 2 //用const表明b是一个常量
 ```python
 # 练习 2.9
 
-print(4+4)
-print(2*4)
+print(4 + 4)
+print(2 * 4)
 print(10-2)
 print(64/8)
 
@@ -333,7 +333,7 @@ cars.sort(reverse=True)
 
 ```python
 cars.sort()  #method
-sorted(cars)
+sorted(cars)  #function
 ```
 
 `cars`是列表，`sort()`是列表这种东西身上的方法，所以使用的方式是`cars.sort()`
@@ -344,10 +344,10 @@ sorted(cars)
 
 
 
-len()其实在我前面的笔记中已经提到过了，也可以用户获取字符的长度，比如`hello`有5个字符：
+len()其实在我前面的笔记中已经提到过了，也可以用于获取字符串的长度，比如`hello`有5个字符：
 
 ```python
->>> len("hello")
+>>> len("hello")  #length
 5
 ```
 
@@ -417,7 +417,7 @@ print(list[9])
 
 # 4 操作列表
 
-## 4.1 遍历整个类别表
+## 4.1 遍历整个别表
 
 ## 4.2 避免缩进错误
 
@@ -612,11 +612,11 @@ for food in foods:
 
 ## 5.2 条件测试
 
-对于新手，可能会比较难判断什么情况下执行if代码块的内容。
+对于新手，可能会比较难判断什么情况下`if`代码块的内容执行。
 
 尤其是涉及到`and`, `or`的情况，因为需要判断的内容可能会比较多和复杂。
 
-一个简化的方式是直接把需要判断的内容print出来看看是`True`还是`False`。
+一个简化的方式是直接把需要判断的内容print出来看看是`True`还是`False`，如果结果是`True`，就会执行if代码块内的代码。
 
 比如：
 
@@ -624,7 +624,7 @@ for food in foods:
 age_0 = 22
 age_1 = 18
 
-if age_0 >=21 and age_1 >=21:
+if age_0 >= 21 and age_1 >= 21:
 	print("Hi")
     
 print(age_0 >=21 and age_1 >=21)
@@ -811,7 +811,50 @@ for i in list:
 
 ## 6.2 使用字典
 
+### 练习6.1-6.3
+
+```python
+# 练习 6.1
+
+person = {"firstname": "mumu", "lastname": "wu", "age": 18, "city": 'beijing'}
+
+print(person["firstname"])
+print(person["lastname"])
+print(person["age"])
+print(person["city"])
+
+# 练习 6.2
+
+db = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
+
+print(f'a like {db["a"]}')
+print(f'b like {db["b"]}')
+print(f'c like {db["c"]}')
+print(f'd like {db["d"]}')
+print(f'e like {db["e"]}')
+
+
+# 练习 6.3
+
+db2 = {"string": "一串文字", "int": "整数",
+       "float": "小数", "list": "列表", "tuple": "元组"}
+
+print(f'string: {db2["string"]}')
+print(f'int: {db2["int"]}')
+print(f'float: {db2["float"]}')
+print(f'list: {db2["list"]}')
+print(f'tuple: {db2["tuple"]}')
+```
+
+
+
 ## 6.3 遍历字典
+
+python提供很多方法，既可以遍历字典的所有键值对，也可以只遍历键或者值。
+
+
+
+
 
 ## 6.4 嵌套
 
