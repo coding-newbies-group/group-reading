@@ -660,9 +660,9 @@ print("Mumu" not in ["Mumu","Zhang San"])
 
 ## 5.3 if语句
 
-注意，if elif，从上向下，当有一个elif满足时，后面的条件将不再判断。
+注意，`if elif`，从上向下，当有一个`elif`满足时，后面的条件将不再判断。
 
-如果需要把所有的条件都判断，需要写成一个个独立的if。
+如果需要把所有的条件都判断，需要写成一个个独立的`if`。
 
 多体会5.3.6披萨的例子。
 
@@ -744,7 +744,12 @@ if "banana" in favorite_fruits:
 False
 >>> a == True
 False
->>>
+>>> type(a)
+<class 'list'>
+>>> type(False)
+<class 'bool'>
+>>> bool(a) == False
+True
 ```
 
 ### 练习5.8-5.11
@@ -854,17 +859,219 @@ python提供很多方法，既可以遍历字典的所有键值对，也可以�
 
 
 
+.items()是字典的所有元素；
+
+.key()是字典的键；
+
+.value()是字典的值。
+
+
+
+### 练习6.4-6.6
+
+```python
+# 练习 6.4
+
+db2 = {"string": "一串文字", "int": "整数",
+       "float": "小数,浮点数", "list": "列表", "tuple": "元组", "set": "集合", "boolean": "布尔值，Ture和False"}
+
+for k, v in db2.items():
+    print(k, ":", v)
+
+# 练习 6.5
+
+rivers = {"尼罗河": "埃塞俄比亚，苏丹，埃及，乌干达，坦桑尼亚，肯尼亚，卢旺达，布隆迪，摩洛哥，刚果和南苏丹",
+          "亚马逊和": "巴西，玻利维亚，秘鲁，厄瓜多尔，哥伦比亚，委内瑞拉，圭亚那，苏里南和法属圭亚那", "Danube": "德国，奥地利，斯洛伐克，匈牙利，克罗地亚，塞尔维亚，罗马尼亚，保加利亚，摩尔多瓦和乌克兰"}
+
+for k, v in rivers.items():
+    print(f"The {k} runs through {v}.")
+
+print("\n河流的名字：")
+for k in rivers.keys():
+    print(k)
+
+print("\n国家的名字：")
+for v in rivers.values():
+    print(v)
+
+# 练习 6.6
+favorite_languages = {
+    "jen": "python",
+    "sarah": "c",
+    "edward": "rust",
+    "phil": "python",
+}
+
+people = ["jen","edward","mumu"]
+
+for p in people:
+    if p in favorite_languages.keys():
+        print(f"Hi {p.title()}, thanks for take the survey.")
+    else:
+        print(f"Hi {p.title()}, could you please help to complate the survey?")
+
+```
+
 
 
 ## 6.4 嵌套
+
+### 练习6.7-6.12
+
+```python
+# 练习 6.7
+
+person1 = {"firstname": "mumu", "lastname": "wu", "age": 18, "city": 'beijing'}
+person2 = {"firstname": "san", "lastname": "zhang",
+           "age": 19, "city": 'shanghai'}
+person3 = {"firstname": "si", "lastname": "li", "age": 20, "city": 'guangzhou'}
+
+list = [person1, person2, person3]
+
+for i in list:
+    print(i)
+
+# 练习 6.8
+
+pets = {"amao": {"category": "cat", "owner": "zhangsan"},
+        "agou": {"category": "dog", "owner": "lisi"}}
+
+for k,v in pets.items():
+    print(k,v)
+
+
+# 练习 6.9
+#类似6.8
+
+# 练习 6.10
+#类似编程语言的题目：
+favorite_languages = {
+    "jen": ["python", "rust"],
+    "sarah": ["c"]
+}
+
+for name, language in favorite_languages.items():
+
+    if(len(language) == 1):
+        print(f"{name}'s favorite langue is:")
+        for i in language:
+            print(i)
+    else:
+        print(f"{name}'s favorite langue are:")
+        for i in language:
+            print(i)
+
+# 练习 6.11
+#重复练习，跳过
+
+# 练习 6.12
+#参考练习6.10，结合了if对遍历内容做判断。
+```
+
+
 
 # 7 用户输入和while循环
 
 ## 7.1 input()函数的工作原理
 
+7.1.1中的示例使用了+=，还记得这是什么吗？
+
++=就是先+然后再=（赋值），比如下面两行代码是等价的:
+
+```
+a += b
+a = a + b
+```
+
+
+
+input()函数得到的结果会转换为字符串，即使输入的是数字。
+
+
+
+求模运算符（%），取余数。
+
+
+
+### 练习7.1-7.3
+
+```python
+# 练习 7.1
+car = input("请问您想要租什么车？")
+print(f"让我查询一下是否有{car}")
+
+# 练习 7.2
+customers = int(input("请问您有几位用餐？"))
+if customers > 8:
+    print("很抱歉，已经没有空位了。")
+else:
+    print("可以的，欢迎就餐。")
+
+# 练习 7.3
+
+number = int(input("请输入一个数字"))
+if number % 10 == 0:
+    print("这个数字是10的整数倍。")
+else:
+    print("这个数字不是10的整数倍。")
+
+```
+
+
+
 ## 7.2 while 循环简介
+
+continue是继续的意思，往往容易让人误解，实际上是break+continue，结束本次循环，然后继续后面的循环。
+
+### 练习7.4-7.7
+
+```
+
+```
+
+
 
 ## 7.3 使用while循环处理列表和字典
 
+for循环是一种遍历列表的有效方式，但不应该在for循环中修改列表，否则将导致Python难以跟踪其中的元素。要在遍历列表的同时修改它，可使用while循环。通过将while循环与列表和字典结合起来使用，可收集、存储并组织大量的输入，供以后查看和使用。
+
+### 练习7.8-7.10
+
+```
+
+```
+
+
+
 # 8 函数
 
+## 8.1 定义函数
+
+关于形参实参，如果不好记什么是形参，我们可以记住实参，即调用一个函数时实际要提供的参数。
+
+比如例子：greet_user("mumu")，mumu是实际上要提供给函数greet_user()的，所以mumu在这里是实参（实际的参数），那greet_user(username)的username就是形参。
+
+
+
+### 练习8.1-8.2
+
+```
+
+```
+
+
+
+## 8.2 传递实参
+## 8.3 返回值
+## 8.4 传递列表
+## 8.5 传递任意数量的实参
+8.6 将函数存储在模块中
+8.7 函数编写指南
+9.1 创建和使用类
+9.2 使用类和实例
+9.3 继承
+9.4 导入类
+9.5 Python标准库
+9.6 类的编程风格
+10.1 读取文件
+10.2 写入文件
