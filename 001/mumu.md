@@ -1025,7 +1025,41 @@ continue是继续的意思，往往容易让人误解，实际上是break+contin
 
 ### 练习7.4-7.7
 
-```
+```python
+# 练习 7.4
+
+active = True
+
+while active:
+    a = input("请输入您需要添加的披萨配料：")
+    if a != "quit":
+        print(f"将在披萨中添加{a}")
+    else:
+        active = False
+
+# 练习 7.5
+
+while True:
+    age = int(input("请问您的年龄是？"))
+    if age < 3:
+        print("免费")
+    elif age < 12:
+        print("10元")
+    else:
+        print("15元")
+
+# 练习 7.6
+
+while True:
+    a = input("请输入您需要添加的披萨配料：")
+    if a != "quit":
+        print(f"将在披萨中添加{a}")
+    else:
+        break
+
+# 练习 7.7
+while True:
+    print("按Ctrl + C,或者关闭窗口结束无限循环。")
 
 ```
 
@@ -1037,8 +1071,35 @@ for循环是一种遍历列表的有效方式，但不应该在for循环中修�
 
 ### 练习7.8-7.10
 
-```
+```python
+# 练习 7.8
 
+sandwich_orders = ["a", "pastrami", "b", "pastrami", "c", "pastrami"]
+finished_sandwiches = []
+
+for i in sandwich_orders:
+    print(f"I made your {i}")
+    finished_sandwiches.append(i)
+
+print(finished_sandwiches)
+
+# 练习 7.9
+
+print("pastrami have sold out.")
+sandwich_orders2 = ["a", "pastrami", "b", "pastrami", "c", "pastrami"]
+finished_sandwiches2 = []
+
+while "pastrami" in sandwich_orders2:
+    sandwich_orders2.remove("pastrami")
+
+finished_sandwiches2 = sandwich_orders2[:]
+print(finished_sandwiches2)
+
+# 练习7.10
+
+while True:
+    target = input("If you could visit one place in the world, where would you go?")
+    print(target)
 ```
 
 
@@ -1053,25 +1114,192 @@ for循环是一种遍历列表的有效方式，但不应该在for循环中修�
 
 
 
-### 练习8.1-8.2
-
-```
-
-```
-
-
-
 ## 8.2 传递实参
+
+位置实参，也就是说，在提供给函数的参数的顺序，位置，决定了这个参数值是对应到哪个参数的变量。
+
+关键字实参，将参数值指定给某个具体的参数变量。
+
+
+
+建议把包含默认值的形参放到函数的后面，这样实参还可以按照位置顺序指定给没有默认值的形参。
+
+
+
+### 练习8.1-8.5
+
+```python
+# 练习 8.1
+
+def display_message():
+    print("function")
+
+
+display_message()
+
+# 练习 8.2
+
+
+def favorite_book(title):
+    print(f"One of my favorite books is {title}")
+
+
+favorite_book("Alice in Wonderland.")
+
+# 练习 8.3
+
+
+def make_shirt(size, text):
+    print(f"shirt size is {size}, and text: {text} on it")
+
+
+make_shirt(1, "hi")
+make_shirt(text="hello", size=2)
+
+
+# 练习 8.4
+
+def make_shirt2(size="Big", text="I love Python"):
+    print(f"shirt size is {size}, and text: {text} on it")
+
+
+make_shirt2()
+make_shirt2("Middle")
+make_shirt2("Small", "Coding")
+
+
+# 练习 8.5
+
+def describe_city(city, country):
+    print(f"{city} is in {country}")
+
+
+describe_city("Beijing", "China")
+
+```
+
+
+
 ## 8.3 返回值
+
+请认真阅读，理解8.3.2，如何让实参变成可选的：指定默认值为空字符串，移到形参列表的末尾，在函数体内对空值进行判断，实现实参可选。
+
+
+
+### 练习8.6-8.8
+
+```python
+# 练习 8.6
+
+def city_country(city, country):
+    return f"{city.title()}, {country.title()}"
+
+
+print(city_country("beijing", "china"))
+print(city_country("shanghai", "china"))
+print(city_country("guangzhou", "china"))
+
+
+# 练习 8.7
+
+def make_album(singer, album, songs=None):
+    if songs == None:
+        return {singer.title(): {"Album": album.title()}}
+    else:
+        return {singer.title(): {"Album": album.title(), "Songs": songs}}
+
+
+print(make_album("zhoujielun", "a"))
+print(make_album("zhoujielun", "b"))
+print(make_album("zhoujielun", "c", 12))
+
+# 练习 8.8
+
+while True:
+    singer = input("请提供歌手名：(输入q退出程序)")
+    if singer == "q":
+        break
+    album = input("请提供专辑名：(输入q退出程序)")
+    if album == "q":
+        break
+    print(make_album(singer, album))
+
+```
+
+
+
 ## 8.4 传递列表
+
+每个函数都应该只负责一项具体工作。
+
+
+
+### 练习8.9-8.11
+
+```python
+# 练习 8.9
+
+list = ["a", "b", "c"]
+
+
+def show_messages(list):
+    for i in list:
+        print(i)
+
+
+show_messages(list)
+
+# 练习 8.10
+
+list2 = []
+
+def send_messages(list,list2):
+    for i in list:
+        list2.append(i)
+
+send_messages(list,list2)
+
+print(list)
+print(list2)
+
+
+# 练习 8.11
+send_messages(list[:],list2)  #如果移除用pop()实现，可以保留原list
+```
+
+
+
 ## 8.5 传递任意数量的实参
-8.6 将函数存储在模块中
-8.7 函数编写指南
-9.1 创建和使用类
-9.2 使用类和实例
-9.3 继承
-9.4 导入类
-9.5 Python标准库
-9.6 类的编程风格
-10.1 读取文件
-10.2 写入文件
+
+传递任意数量的参数就是把这些实参作为形参的元素，构成一个元组，然后在函数内部，可以操纵这个元组。
+
+
+
+注意8.5.1和8.5.2的不同，一个星号\*是任意实参为元组，两个星号\*是任意实参为字典。
+
+
+
+你经常会看到通用形参名*args，收集任意数量的位置实参。
+
+你经常会看到通用形参名**kwargs，收集任意数量的关键字实参。
+
+
+
+### 练习8.12-8.14
+
+```
+
+```
+
+
+
+## 8.6 将函数存储在模块中
+## 8.7 函数编写指南
+## 9.1 创建和使用类
+## 9.2 使用类和实例
+## 9.3 继承
+## 9.4 导入类
+## 9.5 Python标准库
+## 9.6 类的编程风格
+## 10.1 读取文件
+## 10.2 写入文件
