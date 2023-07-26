@@ -1287,14 +1287,83 @@ send_messages(list[:],list2)  #如果移除用pop()实现，可以保留原list
 
 ### 练习8.12-8.14
 
-```
+```python
+# 练习 8.12
 
+def sandwich(*args):
+    print("用户的三明治添加了下面的食材：")
+    for i in args:
+        print(i)
+
+
+sandwich("a", "b", "c")
+
+# 练习 8.13
+#就是替换一下函数的值为自己的信息，忽略。
+
+# 练习 8.14
+
+def make_car(made,model,**kwargs):
+    kwargs["made"]=made
+    kwargs["model"]=model
+    return kwargs
+
+car = make_car("subaru","outback",color="blue",two_package=True)
+
+print(car)
 ```
 
 
 
 ## 8.6 将函数存储在模块中
+
+```
+# 导入所有函数
+import module_name
+
+# 导入特定函数
+from module_name import function_0, function_1
+
+```
+
+导入所有函数使用函数：module_name.function_name()
+
+导入特定函数使用函数：无需使用module_name + . 直接使用函数即可。
+
+
+
 ## 8.7 函数编写指南
+
+给形参指定默认值，等号两边不要有空格。
+
+
+
+所有的import都应该放在文件的开头，除了描述整个程序的注释。
+
+
+
+### 练习8.15-8.17
+
+```python
+# 练习 8.15
+#没找到printing_models.py
+
+import printing_models
+
+# 练习 8.16
+#将练习8.12-8.14命名为sandwich.py，然后：
+import sandwich
+from sandwich import sandwich
+from sandwich import sandwich as san
+import sandwich as san
+from sandwich import *
+
+# 练习 8.17
+#跳过
+```
+
+
+
 ## 9.1 创建和使用类
 ## 9.2 使用类和实例
 ## 9.3 继承
@@ -1303,3 +1372,14 @@ send_messages(list[:],list2)  #如果移除用pop()实现，可以保留原list
 ## 9.6 类的编程风格
 ## 10.1 读取文件
 ## 10.2 写入文件
+
+10.3 异常
+
+10.4 存储数据
+
+11.1 使用pip安装pytest
+
+11.2 测试函数
+
+11.3 测试类
+
