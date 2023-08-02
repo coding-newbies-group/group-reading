@@ -1858,8 +1858,25 @@ Python读取文件时将所有文本都解释为字符串。比如数值，需�
 
 ### 练习10.1-10.3
 
-```
+```python
+# 练习10.1
 
+from pathlib import Path
+
+path = Path("learning_python.txt")
+content = path.read_text()
+
+print(content)
+
+print(content.splitlines())
+
+# 练习10.2
+
+print(content.replace("python", "C"))
+
+# 练习10.3
+
+# 参考10.2，删除变量，让代码简洁
 ```
 
 
@@ -1868,7 +1885,24 @@ Python读取文件时将所有文本都解释为字符串。比如数值，需�
 
 ### 练习10.4-10.5
 
-```
+```python
+# 练习10.4
+from pathlib import Path
+
+path = Path("guest.txt")
+
+username = input("请输入你的名字：")
+
+path.write_text(username)
+
+# 练习10.5
+
+path2 = Path("guest_book.txt")
+
+while True:
+    username = input("请输入你的名字：")
+    with path2.open("a") as f:
+        f.write(username + "\n")
 
 ```
 
@@ -1907,7 +1941,65 @@ Python读取文件时将所有文本都解释为字符串。比如数值，需�
 
 ### 练习10.6-10.10
 
-```
+```python
+# 练习 10.6
+import urllib.request
+from pathlib import Path
+print("输入两个数字，我可以把它们加到一起，告诉您结果是什么。")
+
+while True:
+    try:
+        num1 = input("请输入第一个数字：")
+        if num1 == 'q':
+            break
+        num1 = int(num1)
+        num2 = input("请输入第二个数字：")
+        if num2 == 'q':
+            break
+        num2 = int(num2)
+        print(f"计算结果为：{num1 + num2}\n输入q退出")
+
+    except ValueError:
+        print("您输入的不是数字，请重新输入！")
+
+
+# 练习 10.7
+# 10.6已满足
+
+# 练习 10.8
+
+
+try:
+    cats_path = Path("cats.txt")
+    cats = cats_path.read_text()
+    print(cats)
+
+except:
+    print("cats.txt文件不存在")
+
+
+try:
+    dogs_path = Path("dogs.txt")
+    dogs = dogs_path.read_text()
+    print(dogs)
+
+except:
+    pass
+
+
+# 练习 10.9
+# 10.8的dogs.txt部分已满足
+
+
+# 练习 10.10
+
+content = ""
+
+target_url = "https://www.gutenberg.org/files/71317/71317-0.txt"
+for line in urllib.request.urlopen(target_url):
+    content += line.decode('utf-8')
+
+print(content.lower().count("the "))
 
 ```
 
