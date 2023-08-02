@@ -612,7 +612,7 @@ for food in foods:
 
 ## 5.2 条件测试
 
-对于新手，可能会比较难判断什么情况下`if`代码块的内容执行。
+对于新手，可能会比较难判断什么情况下执行`if`代码块的内容。
 
 尤其是涉及到`and`, `or`的情况，因为需要判断的内容可能会比较多和复杂。
 
@@ -751,6 +751,12 @@ False
 >>> bool(a) == False
 True
 ```
+
+同类型的值才可以比较，比如`1`和`“1”`不相等。
+
+问题？如何验证`[1] == False`的结果？
+
+
 
 ### 练习5.8-5.11
 
@@ -974,11 +980,11 @@ for name, language in favorite_languages.items():
 
 ## 7.1 input()函数的工作原理
 
-7.1.1中的示例使用了+=，还记得这是什么吗？
+7.1.1中的示例使用了`+=`，还记得这是什么吗？
 
-+=就是先+然后再=（赋值），比如下面两行代码是等价的:
+`+=`就是先`+`然后再`=`（赋值），比如下面两行代码是等价的:
 
-```
+```python
 a += b
 a = a + b
 ```
@@ -998,7 +1004,7 @@ input()函数得到的结果会转换为字符串，即使输入的是数字。
 ```python
 # 练习 7.1
 car = input("请问您想要租什么车？")
-print(f"让我查询一下是否有{car}")
+print(f"让我查询一下是否有{car}")  #f-string
 
 # 练习 7.2
 customers = int(input("请问您有几位用餐？"))
@@ -1021,7 +1027,7 @@ else:
 
 ## 7.2 while 循环简介
 
-continue是继续的意思，往往容易让人误解，实际上是break+continue，结束本次循环，然后继续后面的循环。
+`continue`是继续的意思，往往容易让人误解，实际上是`break+continue`，结束本次循环，然后继续后面的循环。
 
 ### 练习7.4-7.7
 
@@ -1092,7 +1098,7 @@ finished_sandwiches2 = []
 while "pastrami" in sandwich_orders2:
     sandwich_orders2.remove("pastrami")
 
-finished_sandwiches2 = sandwich_orders2[:]
+finished_sandwiches2 = sandwich_orders2[:] #实现列表的copy
 print(finished_sandwiches2)
 
 # 练习7.10
@@ -1170,12 +1176,12 @@ make_shirt2("Small", "Coding")
 
 # 练习 8.5
 
-def describe_city(city, country):
+def describe_city(city, country="China"):
     print(f"{city} is in {country}")
 
-
-describe_city("Beijing", "China")
-
+describe_city("Beijing")
+describe_city("Shanghai", "China")
+describe_city("Tokyo", "Japan")
 ```
 
 
@@ -1362,24 +1368,558 @@ from sandwich import *
 #跳过
 ```
 
-
+# 9 类
 
 ## 9.1 创建和使用类
+
+比较重要的术语：根据类来创建对象成为实例化，这让你能够使用类的实例。
+
+
+
+创建类就是找到共性，可以把类理解成是一种事物的模板，给这个模板提供具体的参数，就是通过模板创建具体的事物，就是通过类实例化对象。
+
+比如，狗，就是一类事物，这类事物有很多具体的实例，比如不同品种的狗狗，不同毛色的狗狗，但是他们都有品种，毛色这些属性，`class Dog`就是模板，包含这些共有属性和能做的事情（方法）。
+
+
+
+首字母大写的名称指的是类。
+
+
+
+书中提到，因为这是我们创建的全新的类，所以定义时不加括号。加括号的类是指从别的类继承而来的类，其中括号里面是父类名。9.3会讲到。
+
+
+
+需要注意`__init__`的前后两个横线都是两个短下划线，即总共4个短下划线。
+
+
+
+`def __init__(self)`是固定套路。
+
+
+
+以self为前缀的变量可供类中的所有方法使用。
+
+
+
+### 练习9.1-9.3
+
+```python
+# 练习9.1
+
+class Restaurant:
+    def __init__(self, restaurant_name, cuisine_type):
+        self.name = restaurant_name
+        self.cuisine_type = cuisine_type
+
+    def describe_restaurant(self):
+        print(self.name, self.cuisine_type)
+
+    def open_restaurant(self):
+        print("The restaurant is open!")
+
+restaurant = Restaurant("Burger King", "American")
+
+print(restaurant.name)
+
+print(restaurant.cuisine_type)
+
+restaurant.describe_restaurant()
+
+restaurant.open_restaurant()
+
+# 练习9.2
+
+restaurant1 = Restaurant("a", "American")
+restaurant2 = Restaurant("b", "China")
+restaurant3 = Restaurant("c", "Japan")
+
+restaurant1.describe_restaurant()
+restaurant2.describe_restaurant()
+restaurant3.describe_restaurant()
+
+# 练习9.3
+
+class User:
+    def __init__(self, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
+
+    def describe_user(self):
+        print(self.first_name, self.last_name)
+
+    def greet_user(self):
+        print("Hello", self.first_name, self.last_name)
+
+user1 = User("John", "Doe")
+
+user1.describe_user()
+
+user1.greet_user()
+
+user2 = User("Jane", "Smith")
+
+user2.describe_user()
+
+user2.greet_user()
+```
+
+
+
 ## 9.2 使用类和实例
+
+小白新手要是对self产生疑问，先忽略更好，掌握写class的“套路”即可。回头有了更多的经验，再研究。
+
+
+
+### 练习9.4-9.5
+
+```python
+# 练习9.4
+
+class Restaurant:
+    def __init__(self, restaurant_name, cuisine_type):
+        self.name = restaurant_name
+        self.cuisine_type = cuisine_type
+        self.number_served = 0
+
+    def describe_restaurant(self):
+        print(self.name, self.cuisine_type, self.number_served)
+
+    def open_restaurant(self):
+        print("The restaurant is open!")
+
+    def set_number_served(self, number_served):
+        self.number_served = number_served
+
+    def increment_number_served(self):
+        number_served = input(
+            "How many people can this restaurant served every day do you think it? ")
+        self.number_served += int(number_served)
+
+
+restaurant = Restaurant("Burger King", "Italian")
+
+restaurant.describe_restaurant()
+
+restaurant.set_number_served(5)
+
+restaurant.describe_restaurant()
+
+restaurant.increment_number_served()
+
+restaurant.describe_restaurant()
+
+# 练习9.5
+
+
+class User:
+    def __init__(self, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.login_attempts = 0
+
+    def describe_user(self):
+        print(self.first_name, self.last_name, self.login_attempts)
+
+    def greet_user(self):
+        print("Hello", self.first_name, self.last_name)
+
+    def increment_login_attempts(self):
+        self.login_attempts += 1
+
+    def reset_login_attempts(self):
+        self.login_attempts = 0
+
+
+user = User("John", "Doe")
+
+user.describe_user()
+
+user.increment_login_attempts()
+user.increment_login_attempts()
+user.increment_login_attempts()
+
+user.describe_user()
+
+user.reset_login_attempts()
+
+user.describe_user()
+```
+
+
+
 ## 9.3 继承
+
+在创建子类时，父类必须包含在当前文件中，且位于子类前面。
+
+
+
+父类也成为超类。
+
+
+
+### 练习9.6-9.9
+
+```python
+# 练习9.6
+# class Restaurant is copy from 练习 9.4
+class Restaurant:
+    def __init__(self, restaurant_name, cuisine_type):
+        self.name = restaurant_name
+        self.cuisine_type = cuisine_type
+        self.number_served = 0
+
+    def describe_restaurant(self):
+        print(self.name, self.cuisine_type, self.number_served)
+
+    def open_restaurant(self):
+        print("The restaurant is open!")
+
+    def set_number_served(self, number_served):
+        self.number_served = number_served
+
+    def increment_number_served(self):
+        number_served = input(
+            "How many people can this restaurant served every day do you think it? ")
+        self.number_served += int(number_served)
+
+class IceCreamStand(Restaurant):
+    def __init__(self, restaurant_name, cuisine_type):
+        super().__init__(restaurant_name, cuisine_type)
+        self.flavors = ["vanilla", "chocolate", "strawberry"]
+
+    def get_ice_cream_flavor(self):
+        print(f"We have {len(self.flavors)} flavors of ice cream.")
+        for flavor in self.flavors:
+            print(flavor)
+
+ice_cream = IceCreamStand("Ice Cream Stand", "Dessert")
+ice_cream.get_ice_cream_flavor()
+
+# 练习9.7
+# class User is copy from 练习 9.5
+class User:
+    def __init__(self, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.login_attempts = 0
+
+    def describe_user(self):
+        print(self.first_name, self.last_name, self.login_attempts)
+
+    def greet_user(self):
+        print("Hello", self.first_name, self.last_name)
+
+    def increment_login_attempts(self):
+        self.login_attempts += 1
+
+    def reset_login_attempts(self):
+        self.login_attempts = 0
+
+class Admin(User):
+    def __init__(self, first_name, last_name):
+        super().__init__(first_name, last_name)
+        self.priviledges = ["can add post", "can delete post", "can ban user"]
+
+    def show_priviledges(self):
+        print("You have the following priviledges:")
+        for privilege in self.priviledges:
+            print(privilege)
+
+admin = Admin("admin", "admin")
+
+admin.show_priviledges()
+
+
+# 练习9.8
+
+class Admin2(User):
+    def __init__(self, first_name, last_name):
+        super().__init__(first_name, last_name)
+        self.priviledges = Priviledges()
+
+class Priviledges():
+    def __init__(self):
+        self.priviledges = ["can add post", "can delete post", "can ban user"]
+
+    def show_priviledges(self):
+        print("You have the following priviledges:")
+        for priviledge in self.priviledges:
+            print(priviledge)
+
+admin2 = Admin2("mumu", "wu")
+admin2.priviledges.show_priviledges()
+
+# 练习9.9
+
+# 从网上抄了个基础，然后改了改
+class Car:
+    """一次模拟汽车的简单尝试。"""
+ 
+    def __init__(self, make, model, year):
+        """初始化描述汽车的属性。"""
+        self.make = make
+        self.model = model
+        self.year = year
+        self.odometer_reading = 0
+ 
+    def get_descriptive_name(self):
+        """返回整洁的描述性信息。"""
+        long_name = f"{self.year} {self.make} {self.model}"
+        return long_name.title()
+ 
+    def read_odometer(self):
+        """打印一条指出汽车里程的消息。"""
+        print(f"The car has covered {self.odometer_reading} miles.")
+ 
+    def update_odometer(self, mileage):
+        """将里程表读数设置为指定的值。
+           禁止将里程表读数往回调。
+        """
+        if mileage >= self.odometer_reading:
+            self.odometer_reading = mileage
+        else:
+            print("You can't roll back an odometer.")
+ 
+    def increment_odometer(self, miles):
+        """将里程读数增加指定的值。"""
+        self.odometer_reading += miles
+ 
+ 
+class Battery:
+    """一次模拟电动汽车电瓶的简单尝试。"""
+ 
+    def __init__(self, battery_size=75):
+        """初始化电瓶的属性。"""
+        self.battery_size = battery_size
+ 
+    def describe_battery(self):
+        """打印一条描述电瓶容量的消息。"""
+        print(f"The car has a {self.battery_size}-kwh battery.")
+ 
+    def get_range(self):
+        """打印一条消息，指出电瓶的续航里程。"""
+        global range
+        if self.battery_size == 65:
+            range = 260
+ 
+        elif self.battery_size == 100:
+            range = 315
+        print(f"This car can go about {range} miles on a full charge.")
+ 
+    def upgrade_battery(self):
+        """检查电瓶容量。"""
+        if self.battery_size != 100:
+            self.battery_size = 100
+        print("Upgrade the battery capacity.")
+ 
+ 
+class ElectricCar(Car):
+    """电动汽车的独特之处。"""
+ 
+    def __init__(self, make, model, year):
+        """初始化父类的属性。
+           再初始化电动汽车特有的属性。
+        """
+        super().__init__(make, model, year)
+        self.battery = Battery()
+ 
+    def car_model(self):
+        """指出电动汽车的型号与电池容量的关系。"""
+        if self.model == "model s":
+            self.battery.battery_size = 65
+ 
+        elif self.model == "model m":
+            self.battery.battery_size = 100
+ 
+ 
+my_tesla = ElectricCar('tesla', 'model s', 2019, )
+ 
+print(my_tesla.get_descriptive_name())
+my_tesla.battery.describe_battery()
+my_tesla.car_model()
+ 
+my_tesla.battery.upgrade_battery()
+my_tesla.battery.get_range()
+```
+
+
+
 ## 9.4 导入类
+
+共勉：
+
+一开始应让代码结构尽量简单。首先尝试在一个文件中完成所有的工作，确定一切都能正确运行后，再将类移到独立的模块中。如果你喜欢模块和文件的交互方式，可在项目开始时就尝试将类存储到模块中。先找出让你能够编写出可行代码的方式，再尝试让代码更加整洁。
+
+
+
+### 练习9.10-9.12
+
+```python
+# 练习9.10
+from restaurant import Restaurant
+
+restaurant = Restaurant("便宜坊","中餐")
+restaurant.describe_restaurant()
+
+# 练习9.11
+
+#from user import User,Privileges,Admin
+
+# 练习9.12
+
+# electric_car.py 中：
+# from car import Car
+# class ElectricCar(Car):
+# class Battery:
+
+# my_cars.py 中：
+# from car import Car
+# from electric_car import ElectricCar
+
+```
+
+
+
 ## 9.5 Python标准库
+
+```python
+from random import choice
+meeting_host = ["爱梅","志全","坤琳","Mumu"]
+print(choice(meeting_host))
+```
+
+### 练习9.13-9.16
+
+```python
+# 练习9.13
+
+import random
+
+
+class Die:
+    def __init__(self, sides=6):
+        self.sides = sides
+
+    def roll_die(self):
+        print(random.randint(1, self.sides))
+
+
+die = Die(6)
+for i in range(10):
+    die.roll_die()
+
+
+# 练习9.14
+
+list = list(range(10))
+
+a = random.sample(list, 4)
+
+print(a)
+
+print("如果彩票上是下面的4个数字您就中奖了：")
+for i in a:
+    print(i)
+
+
+# 练习9.15
+
+count = 0
+
+a.sort()
+
+while True:
+    b = random.sample(list, 4)
+    count += 1
+    b.sort()
+    if b == a:
+        break
+
+print(f"共{count}次抽奖后中奖。")
+
+
+# 练习9.16
+#https://pymotw.com/3/
+```
+
+
+
 ## 9.6 类的编程风格
+
+驼峰命名法：类名中的每个单词的首字母都大写，并且不使用下划线。实例名和模块名都采用全小写格式，并在单词之间加上下划线。
+
+# 10 文件和异常
+
 ## 10.1 读取文件
+
+Python读取文件时将所有文本都解释为字符串。比如数值，需要用`int()`，`float()`进行转换。
+
+### 练习10.1-10.3
+
+```
+
+```
+
+
+
 ## 10.2 写入文件
 
-10.3 异常
+### 练习10.4-10.5
 
-10.4 存储数据
+```
 
-11.1 使用pip安装pytest
+```
 
-11.2 测试函数
 
-11.3 测试类
+
+## 10.3 异常
+
+我的一时没有转过弯的想到的问题和来自GPT的回答：
+
+> 来自GPT4：
+> 在Python中，`try/except/else`语句和直接使用`try/except`然后跟上独立的代码，有一些区别。
+>
+> 1. `else`子句在`try`子句没有引发任何异常的情况下执行。如果`try`子句引发了异常，那么`else`子句就不会执行。这实际上允许你对成功的操作进行响应。
+>
+> ```python
+> try:
+>     # 可能会抛出异常的代码
+> except Exception:
+>     # 如果有异常，这部分代码会执行
+> else:
+>     # 如果没有异常，这部分代码会执行
+> ```
+>
+> 2. 如果你不使用`else`子句，而是在`try/except`后面直接写代码，那么无论`try`子句是否引发异常，这部分代码都会执行。
+>
+> ```python
+> try:
+>     # 可能会抛出异常的代码
+> except Exception:
+>     # 如果有异常，这部分代码会执行
+>     
+> # 不管是否有异常，这部分代码都会执行
+> ```
+>
+> 所以，使用`else`子句可以让你更明确地区分出哪部分代码应该在没有异常时执行，哪部分代码应该在有异常时执行。它可以提高代码的可读性和可维护性。
+
+### 练习10.6-10.10
+
+```
+
+```
+
+
+
+## 10.4 存储数据
+
+# 11 测试代码
+
+## 11.1 使用pip安装pytest
+
+## 11.2 测试函数
+
+## 11.3 测试类
 
