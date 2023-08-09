@@ -922,6 +922,10 @@ for p in people:
 
 ## 6.4 嵌套
 
+嵌套就是字典里面套字典，列表里面套字典。
+
+字典数组，[{},{}]
+
 ### 练习6.7-6.12
 
 ```python
@@ -1075,6 +1079,37 @@ while True:
 
 for循环是一种遍历列表的有效方式，但不应该在for循环中修改列表，否则将导致Python难以跟踪其中的元素。要在遍历列表的同时修改它，可使用while循环。通过将while循环与列表和字典结合起来使用，可收集、存储并组织大量的输入，供以后查看和使用。
 
+> 来自GPT4：
+> 这句话是关于Python编程的一条建议。for循环在Python中通常用于遍历序列类型的数据，如列表或字符串。然而，在for循环中直接修改列表可能会导致迭代过程混乱，因为程序可能会错过一些元素或者重复处理某些元素。
+>
+> 下面给你一个例子。假设我们有一个列表，并想在遍历中将列表中的所有偶数删除。
+>
+> ```python
+> numbers = [1, 2, 3, 4, 5, 6]
+> for number in numbers:
+>     if number % 2 == 0:
+>         numbers.remove(number)
+> print(numbers)
+> ```
+>
+> 这段代码可能无法正确地删除所有偶数。原因是在每次删除元素后，列表的长度都会减少，而for循环还在按原计划进行，这可能会导致索引错误或跳过一些元素。
+>
+> 为了解决这个问题，我们可以使用while循环来修改列表：
+>
+> ```python
+> numbers = [1, 2, 3, 4, 5, 6]
+> while i < len(numbers):
+>     if numbers[i] % 2 == 0:
+>         numbers.remove(numbers[i])
+>     else:
+>         i += 1
+> print(numbers)
+> ```
+>
+> 这段代码会正确地删除所有偶数，因为while循环每次运行都会检查列表的长度，以及当前处理的元素的索引位置。
+>
+> 至于将while循环与列表和字典结合起来使用，目的是在接收大量输入的同时存储和组织这些输入。这种做法常用于建立一些需要用户输入并需要保存输入记录的程序。
+
 ### 练习7.8-7.10
 
 ```python
@@ -1117,6 +1152,8 @@ while True:
 关于形参实参，如果不好记什么是形参，我们可以记住实参，即调用一个函数时实际要提供的参数。
 
 比如例子：greet_user("mumu")，mumu是实际上要提供给函数greet_user()的，所以mumu在这里是实参（实际的参数），那greet_user(username)的username就是形参。
+
+比如，张三，张是姓，三是名，姓，名就是形参，实际的姓和名，就是形参姓和名的实参，张和三。
 
 
 
@@ -2007,11 +2044,805 @@ print(content.lower().count("the "))
 
 ## 10.4 存储数据
 
+注意，示例10.4.1的`contents`是什么类型的数据？
+
+可以试着使用`type()`打印出来看看。
+
+```python
+from pathlib import Path
+import json
+
+numbers = [2, 3, 5, 7, 11, 13]
+
+path = Path('numbers.json')
+
+contents = json.dumps(numbers)
+
+print(type(contents))
+```
+
+```powershell
+<class 'str'>
+```
+
+
+
+同样的，通过`json.loads()`读回来的数据是什么类型？
+
+```python
+from pathlib import Path
+import json
+
+contents = path.read_text()
+
+numbers = json.loads(contents)
+
+print(numbers)
+print(type(numbers))
+```
+
+```powershell
+[2, 3, 5, 7, 11, 13]
+<class 'list'>
+```
+
+
+
+`path.exists()`判断`path`所指向的文件是否存在。
+
+
+
+### 练习10.11-10.14
+
+`pathlib`处理的是硬盘中的数据，读和写等；
+
+`json`处理的是内存中的数据，`dumps()`和`loads()`等。
+
+所以，对于写，先`dumps()`后`write_text()`，对于读，先`read_text()`后`loads()`。
+
+```python
+# 练习 10.11
+from pathlib import Path
+import json
+
+
+path = Path("favourite_number.json")
+
+
+# favourite_number = input("请输入一个数字：")
+# path.write_text(json.dumps(int(favourite_number)))
+
+favourite_number = json.loads(path.read_text())
+
+print(f"I know your favourite number is: {favourite_number}")
+
+# 练习 10.12
+
+from pathlib import Path
+import json
+
+path = Path("favourite_number.json")
+
+
+if path.exists():
+    favourite_number = json.loads(path.read_text())
+    print(f"I know your favourite number is: {favourite_number}")
+else:
+    favourite_number = input("请输入一个数字：")
+    with path.open("w") as f:
+        f.write(json.dumps(int(favourite_number)))
+
+# 练习 10.13
+
+from pathlib import Path
+import json
+
+
+def greet_user():
+    """问候用户，并返回用户的名字"""
+
+    path = Path("username.json")
+
+    if path.exists():
+        contents = json.loads(path.read_text())
+        name = contents["username"]
+        age = contents["age"]
+        sex = contents["sex"]
+        times = 3
+        while True:
+            login = input("请输入你的登录名：")
+            if login == name:
+                print(
+                    f"Hello, {name}, you are {age} years, and you are {sex}!")
+                break
+            else:
+                times -= 1
+                if times != 0:
+                    print(f"请输入正确的用户名，剩余{times}次机会。")
+                else:
+                    print("机会已用完。")
+                    break
+    else:
+        username = input("请输入你的名字：")
+        sex = input("请输入你的性别：")
+        age = input("请输入你的年龄：")
+        contents = {
+            "username": username,
+            "sex": sex,
+            "age": age,
+        }
+        contents = json.dumps(contents)
+        path.write_text(contents)
+        print(f"We'll remember you {username}!")
+
+
+greet_user()
+
+```
+
+
+
 # 11 测试代码
 
 ## 11.1 使用pip安装pytest
 
+如果遇到报错，考虑用管理员权限运行终端。
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230803191134.png)
+
 ## 11.2 测试函数
 
+测试文件，测试函数 的名称必须以`test_`打头。
+
+
+
+要将某个参数设为可选的，将该参数移至末尾，然后设置默认值为""，即空字符串，然后对该参数判断，决定代码的选择，比如：
+
+```python
+def get_formatted_name(first, last, middle=''):
+	if middle:
+		full_name = f"{first} {middle} {last}"
+	else:
+		full_name = f"{first} {last}"
+	return full_name.title()
+```
+
+
+
+### 练习11.1-11.2
+
+```python
+# 练习 11.1
+
+# 文件city_functions.py中的代码
+def cityinfo(city, country):
+    return f"{city.title()}, {country.title()}"
+
+# 文件test_cities.py中的代码
+from city_functions import cityinfo
+
+
+def test_city_country():
+    assert cityinfo('santiago', 'chile') == 'Santiago, Chile'
+```
+
+运行结果：
+
+```powershell
+PS C:\Users\vwumumu\Desktop\python_work\11.1> pytest
+================ test session starts ==============================
+platform win32 -- Python 3.11.4, pytest-7.4.0, pluggy-1.0.0
+rootdir: C:\Users\vwumumu\Desktop\python_work\11.1
+plugins: anyio-3.6.2
+collected 1 item                                                                                         
+
+test_cities.py .                                                                                  [100%] 
+
+================ 1 passed in 0.01s ================================
+```
+
+```python
+# 练习 11.2
+
+# 文件city_functions.py中的代码
+def cityinfo(city, country, population=""):
+    if population:
+        return f"{city.title()}, {country.title()} - population {population}"
+    else:
+        return f"{city.title()}, {country.title()}"
+
+
+# 文件test_cities.py中的代码
+from city_functions import cityinfo
+
+
+def test_city_country():
+    assert cityinfo('santiago', 'chile') == 'Santiago, Chile'
+
+
+def test_city_country_population():
+    assert cityinfo('santiago', 'chile',
+                    population=5000000) == 'Santiago, Chile - population 5000000'
+```
+
+运行结果：
+
+```powershell
+PS C:\Users\vwumumu\Desktop\python_work\11.2> pytest.exe
+================ test session starts ==============================
+platform win32 -- Python 3.11.4, pytest-7.4.0, pluggy-1.0.0
+rootdir: C:\Users\vwumumu\Desktop\python_work\11.2
+plugins: anyio-3.6.2
+collected 2 items                                                                                        
+
+test_cities.py ..                                                                                 [100%] 
+
+================ 2 passed in 0.01s ================================
+```
+
+
+
 ## 11.3 测试类
+
+### 练习11.3
+
+```python
+# 练习11.3
+
+# 文件employee.py的代码
+class Employee:
+    def __init__(self, firstname, lastname, sallary) -> None:
+        self.firstname = firstname
+        self.lastname = lastname
+        self.sallary = sallary
+
+    def give_raise(self, increase=5000):
+        self.sallary += increase
+
+# 文件test_employee.py的代码
+import pytest
+from employee import Employee
+
+
+@pytest.fixture
+def employee():
+    employee = Employee("mumu", "wu", 1800)
+    return employee
+
+
+def test_give_default_raise(employee):
+    employee.give_raise()
+    assert employee.sallary == 6800
+
+
+def test_give_custom_raise(employee):
+    employee.give_raise(increase=10000)
+    assert employee.sallary == 11800
+```
+
+运行结果：
+
+```powershell
+================ test session starts ==============================
+platform win32 -- Python 3.11.4, pytest-7.4.0, pluggy-1.0.0
+rootdir: C:\Users\vwumumu\Desktop\python_work\11.3
+plugins: anyio-3.6.2
+collected 2 items
+
+test_employee.py ..                                                                               [100%]
+
+================ 2 passed in 0.01s ===========================================
+```
+
+# 项目 2 数据可视化
+
+# 15 生成数据
+
+## 15.1  安装 Matplotlib
+
+## 15.2 绘制简单的折线图
+
+### 练习15.1-15.2
+
+```python
+# 练习 15.1，15.2
+
+import matplotlib.pyplot as plt
+
+x_values = range(1, 6)
+# x_values = range(1, 5001) #显示 5000 个正整数的立方值
+y_values = [x**3 for x in x_values]
+
+plt.style.use('seaborn')
+fig, ax = plt.subplots()
+
+ax.scatter(x_values, y_values, s=10)
+# ax.scatter(x_values, y_values, s=10, c=y_values, cmap=plt.cm.summer) #5000个正整数的代码线条选择了彩色，对应练习 15.2，为了映下景，配色方案选择了夏天“summer”
+
+plt.show()
+
+```
+
+![image-20230807220242969](https://raw.githubusercontent.com/vwumumu/images/master/image-20230807220242969.png)
+
+![image-20230807220837868](https://raw.githubusercontent.com/vwumumu/images/master/image-20230807220837868.png)
+
+
+
+## 15.3  随机游走
+
+### 练习 15.3-15.5
+
+```python
+# 练习15.3
+
+import matplotlib.pyplot as plt
+from random import choice
+
+
+class RandomWalk:
+    def __init__(self, num_points=5000):
+        self.num_points = num_points
+
+        self.x_values = [0]
+        self.y_values = [0]
+
+    def fill_walk(self):
+        while len(self.x_values) < self.num_points:
+            x_direction = choice([-1, 1])
+            x_distance = choice([0, 1, 2, 3, 4])
+            x_step = x_direction * x_distance
+            # print(x_step)
+
+            y_direction = choice([-1, 1])
+            y_distance = choice([0, 1, 2, 3, 4])
+            y_step = y_direction * y_distance
+            # print(y_step)
+
+            if x_step == 0 and y_step == 0:
+                continue
+
+            next_x = self.x_values[-1] + x_step
+            # print(next_x)
+            next_y = self.y_values[-1] + y_step
+            # print(next_y)
+
+            self.x_values.append(next_x)
+            self.y_values.append(next_y)
+
+
+for i in range(1):
+
+    rw = RandomWalk()
+    rw.fill_walk()
+
+    plt.style.use('classic')
+    fig, ax = plt.subplots(figsize=(40.96, 21.60), dpi=128)
+    point_numbers = range(rw.num_points)
+    ax.plot(rw.x_values, rw.y_values, linewidth=1)
+    ax.set_aspect('equal')
+
+    ax.get_xaxis().set_visible(False)
+    print(ax.get_xaxis)
+    ax.get_yaxis().set_visible(False)
+
+    plt.show()
+
+```
+
+![image-20230807231811552](https://raw.githubusercontent.com/vwumumu/images/master/image-20230807231811552.png)
+
+```python
+# 练习15.4
+# 练习15.3
+
+import matplotlib.pyplot as plt
+from random import choice
+
+
+class RandomWalk:
+    def __init__(self, num_points=5000):
+        self.num_points = num_points
+
+        self.x_values = [0]
+        self.y_values = [0]
+
+    def fill_walk(self):
+        while len(self.x_values) < self.num_points:
+            x_direction = choice([1])
+            x_distance = choice([0, 1, 2, 3, 4, 5, 6, 7, 8])
+            x_step = x_direction * x_distance
+            # print(x_step)
+
+            y_direction = choice([-1, 1])
+            y_distance = choice([0, 1, 2, 3, 4, 5, 6, 7, 8])
+            y_step = y_direction * y_distance
+            # print(y_step)
+
+            if x_step == 0 and y_step == 0:
+                continue
+
+            next_x = self.x_values[-1] + x_step
+            # print(next_x)
+            next_y = self.y_values[-1] + y_step
+            # print(next_y)
+
+            self.x_values.append(next_x)
+            self.y_values.append(next_y)
+
+
+for i in range(1):
+
+    rw = RandomWalk()
+    rw.fill_walk()
+
+    plt.style.use('classic')
+    fig, ax = plt.subplots(figsize=(40.96, 21.60), dpi=128)
+    point_numbers = range(rw.num_points)
+    ax.scatter(rw.x_values, rw.y_values, s=1, c=point_numbers,
+               cmap=plt.cm.Blues, edgecolors='none')
+    ax.set_aspect('equal')
+    ax.scatter(0, 0, c='green', edgecolors='none', s=100)
+    ax.scatter(rw.x_values[-1], rw.y_values[-1],
+               c='red', edgecolors='none', s=100)
+    ax.set_aspect('equal')
+
+    ax.get_xaxis().set_visible(False)
+    print(ax.get_xaxis)
+    ax.get_yaxis().set_visible(False)
+
+    plt.show()
+
+```
+
+![image-20230807232043107](https://raw.githubusercontent.com/vwumumu/images/master/image-20230807232043107.png)
+
+```python
+# 练习 15.5
+
+import matplotlib.pyplot as plt
+from random import choice
+
+
+class RandomWalk:
+    def __init__(self, num_points=5000):
+        self.num_points = num_points
+
+        self.x_values = [0]
+        self.y_values = [0]
+
+    def fill_walk(self):
+        while len(self.x_values) < self.num_points:
+            x_step, y_step = self.get_step()
+
+            if x_step == 0 and y_step == 0:
+                continue
+
+            next_x = self.x_values[-1] + x_step
+            # print(next_x)
+            next_y = self.y_values[-1] + y_step
+            # print(next_y)
+
+            self.x_values.append(next_x)
+            self.y_values.append(next_y)
+
+    def get_step(self):
+        while len(self.x_values) < self.num_points:
+            x_direction = choice([-1, 1])
+            x_distance = choice([0, 1, 2, 3, 4, 5, 6, 7, 8])
+            x_step = x_direction * x_distance
+
+            y_direction = choice([-1, 1])
+            y_distance = choice([0, 1, 2, 3, 4, 5, 6, 7, 8])
+            y_step = y_direction * y_distance
+
+            return x_step, y_step
+
+
+for i in range(1):
+
+    rw = RandomWalk(num_points=50000)
+    rw.fill_walk()
+
+    plt.style.use('classic')
+    fig, ax = plt.subplots(figsize=(40.96, 21.60), dpi=128)
+    point_numbers = range(rw.num_points)
+    ax.scatter(rw.x_values, rw.y_values, s=1, c=point_numbers,
+               cmap=plt.cm.Blues, edgecolors='none')
+    ax.set_aspect('equal')
+    ax.scatter(0, 0, c='green', edgecolors='none', s=100)
+    ax.scatter(rw.x_values[-1], rw.y_values[-1],
+               c='red', edgecolors='none', s=100)
+    ax.set_aspect('equal')
+
+    ax.get_xaxis().set_visible(False)
+    print(ax.get_xaxis)
+    ax.get_yaxis().set_visible(False)
+
+    plt.show()
+
+```
+
+## 15.4  使用 Plotly 模拟掷骰子
+
+### 练习15.6-15.10
+
+```python
+# 练习15.6
+
+from random import randint
+import plotly.express as px
+
+class Die:
+    """表示一个骰子的类"""
+
+    def __init__(self, num_sides=6):
+        """骰子默认为 6 面的"""
+        self.num_sides = num_sides
+
+    def roll(self):
+        """"返回一个介于 1 和骰子面数之间的随机值"""
+        return randint(1, self.num_sides)
+
+die1 = Die(8)
+die2 = Die(8)
+
+  # 掷几次骰子并将结果存储在一个列表中
+results = []
+for roll_num in range(100000):
+    result = die1.roll() + die2.roll()
+    results.append(result)
+
+print(results)
+```
+
+```python
+# 练习15.7
+
+from random import randint
+import plotly.express as px
+
+class Die:
+    """表示一个骰子的类"""
+
+    def __init__(self, num_sides=6):
+        """骰子默认为 6 面的"""
+        self.num_sides = num_sides
+
+    def roll(self):
+        """"返回一个介于 1 和骰子面数之间的随机值"""
+        return randint(1, self.num_sides)
+
+die1 = Die()
+die2 = Die()
+die3 = Die()
+
+  # 掷几次骰子并将结果存储在一个列表中
+results = []
+for roll_num in range(10000):
+    result = die1.roll() + die2.roll() + die3.roll()
+    results.append(result)
+
+frequencies = []
+max_result = die1.num_sides + die2.num_sides + die3.num_sides
+poss_results = range(3, max_result +1)
+for value in poss_results:
+    frequency = results.count(value)
+    frequencies.append(frequency)
+
+title = "Results of rolling 3 D6 10000 times."
+labels = {"x": "Result", "y": "Frequency of Result"}
+fig = px.bar(x=poss_results, y=frequencies, labels=labels, title=title)
+fig.update_layout(xaxis_dtick=1)
+fig.show()
+```
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230809231829.png)
+
+```python
+# 练习15.8
+
+from random import randint
+import plotly.express as px
+
+class Die:
+    """表示一个骰子的类"""
+
+    def __init__(self, num_sides=6):
+        """骰子默认为 6 面的"""
+        self.num_sides = num_sides
+
+    def roll(self):
+        """"返回一个介于 1 和骰子面数之间的随机值"""
+        return randint(1, self.num_sides)
+
+die1 = Die()
+die2 = Die()
+
+  # 掷几次骰子并将结果存储在一个列表中
+results = []
+for roll_num in range(10000):
+    result = die1.roll() * die2.roll() 
+    results.append(result)
+
+frequencies = []
+max_result = die1.num_sides * die2.num_sides 
+poss_results = range(1, max_result +1)
+for value in poss_results:
+    frequency = results.count(value)
+    frequencies.append(frequency)
+
+title = "Results of rolling 2 D6 10000 times."
+labels = {"x": "Result", "y": "Frequency of Result"}
+fig = px.bar(x=poss_results, y=frequencies, labels=labels, title=title)
+fig.update_layout(xaxis_dtick=1)
+fig.show()
+```
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230809231753.png)
+
+```python
+# 练习15.9
+
+from random import randint
+import plotly.express as px
+
+class Die:
+    """表示一个骰子的类"""
+
+    def __init__(self, num_sides=6):
+        """骰子默认为 6 面的"""
+        self.num_sides = num_sides
+
+    def roll(self):
+        """"返回一个介于 1 和骰子面数之间的随机值"""
+        return randint(1, self.num_sides)
+
+die1 = Die()
+die2 = Die()
+
+  # 掷几次骰子并将结果存储在一个列表中
+results = []
+results = [die1.roll() * die2.roll() for roll_num in range(10000)]
+
+    
+
+frequencies = []
+max_result = die1.num_sides * die2.num_sides 
+poss_results = range(1, max_result +1)
+
+frequencies = [results.count(value) for value in poss_results]
+
+
+title = "Results of rolling 2 D6 10000 times."
+labels = {"x": "Result", "y": "Frequency of Result"}
+fig = px.bar(x=poss_results, y=frequencies, labels=labels, title=title)
+fig.update_layout(xaxis_dtick=1)
+fig.show()
+```
+
+```python
+# 练习15.10
+# 用Matplotlib实现掷骰子
+
+from random import randint
+import matplotlib.pyplot as plt
+
+class Die:
+    """表示一个骰子的类"""
+
+    def __init__(self, num_sides=6):
+        """骰子默认为 6 面的"""
+        self.num_sides = num_sides
+
+    def roll(self):
+        """"返回一个介于 1 和骰子面数之间的随机值"""
+        return randint(1, self.num_sides)
+
+die1 = Die()
+die2 = Die()
+
+  # 掷几次骰子并将结果存储在一个列表中
+results = []
+results = [die1.roll() * die2.roll() for roll_num in range(10000)]
+
+    
+
+frequencies = []
+max_result = die1.num_sides * die2.num_sides 
+poss_results = range(1, max_result +1)
+
+frequencies = [results.count(value) for value in poss_results]
+
+fig, ax = plt.subplots()
+
+results = poss_results
+counts = frequencies
+
+ax.bar(results, counts)
+
+plt.show()
+```
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230809233320.png)
+
+```python
+# 练习15.10
+# 用Plotly实现随机游走
+
+from random import choice
+import plotly.express as px
+
+class RandomWalk:
+    def __init__(self, num_points=5000):
+        self.num_points = num_points
+
+        self.x_values = [0]
+        self.y_values = [0]
+
+    def fill_walk(self):
+        while len(self.x_values) < self.num_points:
+            x_step, y_step = self.get_step()
+
+            if x_step == 0 and y_step == 0:
+                continue
+
+            next_x = self.x_values[-1] + x_step
+            # print(next_x)
+            next_y = self.y_values[-1] + y_step
+            # print(next_y)
+
+            self.x_values.append(next_x)
+            self.y_values.append(next_y)
+
+    def get_step(self):
+        while len(self.x_values) < self.num_points:
+            x_direction = choice([-1, 1])
+            x_distance = choice([0, 1, 2, 3, 4, 5, 6, 7, 8])
+            x_step = x_direction * x_distance
+
+            y_direction = choice([-1, 1])
+            y_distance = choice([0, 1, 2, 3, 4, 5, 6, 7, 8])
+            y_step = y_direction * y_distance
+
+            return x_step, y_step
+
+
+for i in range(1):
+
+    rw = RandomWalk(num_points=10000)
+    rw.fill_walk()
+
+    fig = px.scatter(x=rw.x_values, y=rw.y_values, title='Random Walk')
+    fig.show()
+
+```
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230809234513.png)
+
+对于练习15.10，我们需要找到对方的库中相似的图形，然后参考样例的代码，替换呈现部分的数据，元数据保持不变即可。
+
+# 16 下载数据
+
+## 16.1 CSV文件格式
+
+## 16.2 制作全球地震散点图：GeoJSON
+
+# 17 使用API
+
+## 17.1 使用API
+
+## 17.2 使用Plotly可视化仓库
+
+## 17.3 Hacker News API
+
+# 18 Django入门
+
+## 18.1 建立项目
+
+## 18.2 创建应用程序
+
+## 18.3 创建网页：学习笔记主页
+
+## 18.4 创建其他网页
 
