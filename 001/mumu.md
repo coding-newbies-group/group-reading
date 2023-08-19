@@ -2826,7 +2826,167 @@ for i in range(1):
 
 ## 16.1 CSV文件格式
 
+### 练习16.1-16.5
+
+```python
+# 16.1
+
+from pathlib import Path
+import csv
+import matplotlib.pyplot as plt
+from datetime import datetime
+
+path = Path('project2\\16\sitka_weather_2021_full.csv')
+path2 = Path('project2\\16\death_valley_2021_full.csv')
+lines = path.read_text().splitlines()
+lines2 = path2.read_text().splitlines()
+# convert lines to csv
+
+reader = csv.reader(lines)
+reader2 = csv.reader(lines2)
+# get index and content of first line
+
+header_row = next(reader)
+header_row2 = next(reader2)
+
+for i,c in enumerate(header_row2):
+    print(i,c)
+
+water,dates = [],[]
+water2,dates2 = [],[]
+
+
+for row in reader:
+    dates.append(datetime.strptime(row[2], "%Y-%m-%d"))
+    # print(type(row[5]))
+    water.append(float(row[5]))
+
+for row in reader2:
+    dates2.append(datetime.strptime(row[2], "%Y-%m-%d"))
+    # print(type(row[5]))
+    water2.append(float(row[3]))
+
+# print(dates2,water2)
+
+plt.style.use("seaborn")
+fig, (ax1,ax2) = plt.subplots(2,1)
+ax1.bar(dates, water, color="blue")
+ax2.bar(dates2, water2, color="red")
+
+plt.show()
+```
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230815152053.png)
+
+```python
+# 练习16.2
+
+from pathlib import Path
+import csv
+import matplotlib.pyplot as plt
+from datetime import datetime
+
+path = Path('project2\\16\sitka_weather_2021_full.csv')
+path2 = Path('project2\\16\death_valley_2021_full.csv')
+lines = path.read_text().splitlines()
+lines2 = path2.read_text().splitlines()
+# convert lines to csv
+
+reader = csv.reader(lines)
+reader2 = csv.reader(lines2)
+# get index and content of first line
+
+header_row = next(reader)
+header_row2 = next(reader2)
+
+for i,c in enumerate(header_row2):
+    print(i,c)
+
+water,dates = [],[]
+water2,dates2 = [],[]
+
+
+for row in reader:
+    dates.append(datetime.strptime(row[2], "%Y-%m-%d"))
+    # print(type(row[5]))
+    water.append(float(row[5]))
+
+for row in reader2:
+    dates2.append(datetime.strptime(row[2], "%Y-%m-%d"))
+    # print(type(row[5]))
+    water2.append(float(row[3]))
+
+# print(dates2,water2)
+
+plt.style.use("seaborn")
+fig, (ax) = plt.subplots()
+ax.bar(dates, water, color="blue")
+ax.bar(dates2, water2, color="red")
+
+plt.show()
+```
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230815152009.png)
+
+```python
+# 练习 16.3
+#雷同问题，跳过。
+
+# 练习 16.4
+#获取表头后，通过if判断，然后使用不同的代码。
+
+# 练习 16.5
+#雷同，跳过。
+```
+
+
+
 ## 16.2 制作全球地震散点图：GeoJSON
+
+### 练习16.6-16.9
+
+```python
+# 练习 16.6
+for eq_dict in all_eq_dicts:
+    mags.append(eq_dict['properties']['mag'])
+    titles.append(eq_dict['properties']['title'])
+    lons.append(eq_dict['geometry']['coordinates'][0])
+    lats.append(eq_dict['geometry']['coordinates'][1])
+    
+    
+# 练习 16.7
+title= all_eq_data['metadata']["title"],
+
+# 练习 16.8
+#跳过
+
+# 练习 16.9
+from pathlib import Path
+import csv
+
+import plotly.express as px
+
+path = Path("project2\\16.9\world_fires_1_day.csv")
+lines = path.read_text().splitlines()
+
+reader = csv.reader(lines)
+header_row = next(reader)
+
+for i,c in enumerate(header_row):
+    print(i,c)
+
+longitude, latitude, brightness = [], [], []
+for row in reader:
+    longitude.append(float(row[1]))
+    latitude.append(float(row[0]))
+    brightness.append(float(row[2]))
+
+fig = px.scatter_geo(lon=longitude, lat=latitude, size=brightness, color=brightness, color_continuous_scale='bluered', range_color=(0, 400), title='Global Fires', projection='natural earth')
+
+fig.show()
+```
+
+
 
 # 17 使用API
 
@@ -2834,15 +2994,392 @@ for i in range(1):
 
 ## 17.2 使用Plotly可视化仓库
 
+文中涉及的\<a>标签，CSS都是Web开发的相关技术，可先完成内容的理解即可，不必深究。
+
 ## 17.3 Hacker News API
+
+### 练习17.1-17.4
+
+```python
+# 练习 17.1
+#只需要修改url的关键字即可，比如把Python改成JavaScript：
+url += "?q=language:javascript+sort:stars+stars:>10000"
+
+# 练习 17.2
+import requests
+# import json
+from operator import itemgetter
+import plotly.express as px
+
+url = "https://hacker-news.firebaseio.com/v0/topstories.json"
+r = requests.get(url)
+
+submission_ids = r.json()
+submission_dicts = []
+
+for submission_id in submission_ids[:30]:
+    url = f"https://hacker-news.firebaseio.com/v0/item/{submission_id}.json"
+    r = requests.get(url)
+    # print(f"id: {submission_id}\tstatus: {r.status_code}")
+    response_dict = r.json()
+
+    try:
+        submission_dict = {
+        "title": response_dict["title"],
+        "hn_link": f"https://news.ycombinator.com/item?id={submission_id}",
+        "comments": response_dict["descendants"],
+        }
+    except:
+        pass
+    else:
+        submission_dicts.append(submission_dict)
+    
+
+submission_dicts = sorted(submission_dicts, key=itemgetter("comments"), reverse=True)
+
+
+comments, hn_links, hover_texts = [], [], []
+
+for submission_dict in submission_dicts:
+    title = submission_dict['title']
+    comment = submission_dict['comments']
+    hn_link = submission_dict['hn_link']
+    comments.append(comment)
+    hn_links.append(f"<a href='{hn_link}'>{title}</a>")
+    hover_text = f"{title}<br />{comment}"
+    hover_texts.append(hover_text)
+
+title="Top stories on HN"
+labels={'x':'Titles', 'y':'Comments'}
+fig = px.bar(x=hn_links, y=comments, title=title, hover_name= hover_texts )
+
+fig.update_layout(title_font_size=28, xaxis_title_font_size=20, yaxis_title_font_size=20)
+fig.update_traces(marker_color='SteelBlue', marker_opacity=0.6)
+
+fig.show()
+
+# 练习 17.3
+#把status_code换成其他的属性即可，跳过。
+
+# 练习 17.4
+#重复性练习，赶赶进度，先跳过了。
+```
+
+
+
+# 项目2总结
+
+下面基本上相当于模板，套用替换内容即可。
+
+从API获取数据：
+
+```python
+import requests
+import json
+
+
+# Make an API call, and store the response.
+url = "https://hacker-news.firebaseio.com/v0/item/31353677.json"
+
+# Explore the structure of the data.
+response_dict = r.json()
+response_string = json.dumps(response_dict, indent=4)
+```
+
+处理CSV数据：
+
+```python
+from pathlib import Path
+import csv
+
+path = Path('weather_data/death_valley_2021_simple.csv')
+
+lines = path.read_text().splitlines()
+reader = csv.reader(lines)
+```
+
+处理JSON数据：
+
+```python
+from pathlib import Path
+import json
+
+
+# 读取作为字符串的数据并转换为Python对象。
+path = Path('eq_data/eq_data_1_day_m1.geojson')
+contents = path.read_text()
+all_eq_data = json.loads(contents)
+```
+
+通过API，CSV或JSON拿到数据之后处理数据，得到图标需要的元素，比如用于做X,Y轴的数据，然后最简单的拿来就用的方式就是“抄”，“模仿“ Matplotlib和Plotly的官方例子，参考例子的源代码，替换其中的变量，如果想进一步研究就需要阅读其官方文档。
 
 # 18 Django入门
 
 ## 18.1 建立项目
 
+### 练习18.1
+
+```python
+#跳过
+```
+
+
+
 ## 18.2 创建应用程序
+
+每当需要修改“学习笔记”管理的数据时，都采取如下三个步骤：修改 models.py，对 learning_logs 调用 makemigrations，以及让 Django 迁移项目。
+
+
+
+```python
+topic = models.ForeignKey(Topic,on_delete=models.CASCADE)
+```
+
+在Entries的代码中，通过上面的代码，将Entries表与Topic进行了关联，Entries中有了Topic中创建的记录。
+
+### 练习18.2-18.3
+
+```python
+# 练习 18.2
+def __str__(self):
+     """Return a string representation of the model."""
+     if len(self.text) < 50:
+         return self.text
+     else:
+         return self.text[:50] + "..."
+```
+
+![](https://raw.githubusercontent.com/vwumumu/images/master/20230817135615.png)
+
+```python
+# 练习 18.3
+#https://docs.djangoproject.com/en/4.2/topics/db/queries/#making-queries
+```
+
+### 练习 18.4
+这个练习当做前面的“套路”的梳理。
+1. 新建环境：
+
+   ```powershell
+   cd D:\SynologyDrive\projects\
+   mkdir pizzeria_project
+   cd pizzeria_project
+   python -m venv pizzeria_project
+   ```
+
+2. 激活环境：
+
+   ```powershell
+   .\pizzeria_project\Scripts\activate
+   ```
+
+3. 安装Django：
+
+   ```powershell
+   pip install --upgrade pip
+   pip install django
+   ```
+
+4. 通过Django创建项目：
+
+   ```powershell
+   django-admin startproject pizzeria_project .
+   ```
+
+5. 创建数据库：
+
+   ```powershell
+   python .\manage.py migrate
+   ```
+
+6. 运行站点：
+
+   ```powershell
+   python .\manage.py runserver
+   ```
+
+7. 创建应用：
+
+   ```powershell
+   python .\manage.py startapp pizzas
+   ```
+
+8. 定义模型`models.py`
+
+   ```python
+   from django.db import models
+   
+   # Create your models here.
+   class Pizza(models.Model):
+       """A pizza the user can order."""
+       name = models.CharField(max_length=200)
+   
+       def __str__(self):
+           """Return a string representation of the model."""
+           return self.name
+   
+   class Topping(models.Model):
+       """Toppings for pizza."""
+       pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
+       name = models.TextField()
+   
+       def __str__(self):
+           """Return a string representation of the model."""
+           return self.name
+   ```
+
+9. 激活模型`settings.py`：
+
+   ```python
+   INSTALLED_APPS = [
+       "pizzas", # "pizzas" is the name of the app we just created
+       'django.contrib.admin',
+       'django.contrib.auth',
+       'django.contrib.contenttypes',
+       'django.contrib.sessions',
+       'django.contrib.messages',
+       'django.contrib.staticfiles',
+   ]
+   ```
+
+10. 更新数据库：
+
+    ```powershell
+    python .\manage.py makemigrations pizzas
+    python .\manage.py migrate
+    ```
+
+11. 创建管理员用户：
+
+    ```
+    python .\manage.py createsuperuser
+    ```
+
+12. 向管理网站注册模型`admin.py`：
+
+    ```python
+    from .models import Pizza, Topping
+    
+    admin.site.register(Pizza)
+    admin.site.register(Topping)
+    ```
+
+13. 通过Django shell查询：
+
+    ```powershell
+    (pizzeria_project) PS D:\SynologyDrive\projects\pizzeria_project> python .\manage.py shell
+    Python 3.11.4 (tags/v3.11.4:d2340ef, Jun  7 2023, 05:45:37) [MSC v.1934 64 bit (AMD64)] on win32
+    Type "help", "copyright", "credits" or "license" for more information.
+    (InteractiveConsole)
+    >>> from pizzas.models import Topping
+    >>> Topping.objects.all()
+    <QuerySet [<Topping: Pineapple>, <Topping: Canadian bacon>, <Topping: Sausage>]>
+    >>>
+    ```
 
 ## 18.3 创建网页：学习笔记主页
 
+### 练习18.5-18.6
+
+18.5跳过，因为已经通过18.4详细的梳理了过程。
+
+练习18.6当做前面的“套路”的梳理。
+
+url=>view=>html
+
+1. 在`pizzeria_project/urls.py`配置url：
+
+   ```python
+   from django.contrib import admin
+   from django.urls import path, include
+   
+   urlpatterns = [
+       path('admin/', admin.site.urls),
+       path("", include("pizzas.urls"))
+   ]
+   ```
+
+2. 新建`pizzas/urls.py`并添加：
+
+   ```python
+   from django.urls import path
+   
+   from . import views
+   
+   app_name = "pizzas"
+   urlpatterns = [
+       path("", views.index, name="index"),
+   ]
+   ```
+
+3. 在`view.py`中指定`index.html`页面：
+
+   ```python
+   from django.shortcuts import render
+   
+   # Create your views here.
+   def index(request):
+       return render(request,"pizzas/index.html")
+   ```
+
+4. 编写`pizzas\templates\pizzas\index.htm`内容：
+
+   ```html
+   <h2>Pizza Shop</h2>
+   
+   <p>
+     Welcome to the Pizza Shop!  Here you can order a pizza, and see all the
+     pizzas that have been ordered.
+   </p>
+   ```
+
 ## 18.4 创建其他网页
 
+Base:
+
+```html
+<p>
+  <h2><a href="{% url 'learning_logs:index' %}">Learning Log</a></h2>
+</p>
+
+{% block content %}{% endblock content %}
+```
+
+Extend:
+
+```html
+{% extends "learning_logs/base.html" %} {% block content %}
+
+<p>
+  Learning Log helps you keep tack of your learning, for any topic you're
+  inserestted in.
+</p>
+
+{% endblock content %}
+```
+
+### 练习18.7-18.8
+
+```python
+# 练习 18.7
+# https://docs.djangoproject.com/en/4.2/topics/templates/
+
+# 练习 18.8
+# 将learning_note的关键字改成Pizzas项目的关键字即可实现。
+```
+
+
+
+# 19 用户账户
+
+## 19.1 让用户能够输入数据
+
+## 19.2 创建用户账户
+
+## 19.3 让用户拥有自己的数据
+
+# 20 设置应用程序的样式并部署
+
+## 20.1 设置项目“学习笔记”的样式
+
+## 20.2 部署“学习笔记”
